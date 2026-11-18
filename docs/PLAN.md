@@ -23,7 +23,7 @@ Los tres son privados: hay que compartirlos desde **Share** antes de mandárselo
 
 1. Plan aprobado.
 2. Pablo eligió el diseño **J · Editorial ajustada** (18/11).
-3. Etapas 1 a 3 hechas en la rama `develop` con contenido de ejemplo entre [corchetes] (18/11). Todavía no se publicó en `pablomones.github.io`.
+3. Etapas 1 a 3 hechas con contenido de ejemplo entre [corchetes] y publicadas en https://pablomones.github.io (18/11). El código vive en el repo de Pablo: `main` es lo publicado y `develop` el trabajo en curso.
 
 ## Prototipos
 
