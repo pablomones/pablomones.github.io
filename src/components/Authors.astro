@@ -1,0 +1,33 @@
+---
+/** "with A and B", o "Solo-authored" si no hay coautores. */
+import type { Paper } from '../lib/content';
+import { joinNames } from '../lib/format';
+
+interface Props {
+  coauthors: Paper['data']['coauthors'];
+}
+
+const { coauthors } = Astro.props;
+---
+
+{
+  coauthors.length === 0 ? (
+    'Solo-authored'
+  ) : (
+    <>
+      {'with '}
+      {joinNames(coauthors).map(({ item, sep }) => (
+        <>
+          {item.url ? (
+            <a href={item.url} rel="noopener">
+              {item.name}
+            </a>
+          ) : (
+            item.name
+          )}
+          {sep}
+        </>
+      ))}
+    </>
+  )
+}

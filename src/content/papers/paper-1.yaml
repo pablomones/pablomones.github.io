@@ -1,0 +1,11 @@
+title: '[Working paper title 1: about this long, it can wrap to a second line]'
+section: working-papers
+date: 2026-03
+coauthors:
+  - name: '[Coauthor Name]'
+status: 'Revise & Resubmit · [Journal X]'
+url: https://arxiv.org/
+abstract: >-
+  [Abstract as it appears on arXiv: the question, the method and the main result,
+  in three to five sentences.]
+selected: true

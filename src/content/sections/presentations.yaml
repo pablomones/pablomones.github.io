@@ -1,0 +1,10 @@
+# Ejemplo de Sección extra. Está oculta (hidden: true): cambiala a false para que aparezca en el menú.
+name: Presentations
+order: 1
+intro: Recent and upcoming talks.
+items:
+  - title: '[Talk title]'
+    description: '[Conference or seminar], [City]'
+    date: '[Month 2026]'
+    url: https://example.org/
+hidden: true

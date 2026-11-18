@@ -1,0 +1,68 @@
+---
+import type { Course } from '../lib/content';
+import { withBase } from '../lib/format';
+
+interface Props {
+  course: Course;
+}
+
+const { data } = Astro.props.course;
+const detail = [data.code, data.professor && `for Prof. ${data.professor}`, data.level].filter(Boolean).join(' · ');
+---
+
+<div class="list-item course">
+  <span class="course-term">{data.term} {data.year}</span>
+  <span class="course-body">
+    <span class="course-name">{data.course}</span>
+    {detail && <span class="meta course-detail">{detail}</span>}
+    {
+      data.materials && (
+        <a class="course-materials" href={withBase(data.materials)} rel="noopener">
+          Materials<span aria-hidden="true">&nbsp;↗</span>
+        </a>
+      )
+    }
+  </span>
+</div>
+
+<style>
+  .course {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 24px;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+  }
+
+  .course-term {
+    flex: 0 0 130px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .course-body {
+    flex: 999 1 300px;
+    min-width: 0;
+  }
+
+  .course-name {
+    display: block;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .course-detail {
+    display: block;
+    margin: 0;
+  }
+
+  .course-materials {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+</style>

@@ -1,0 +1,16 @@
+# Datos generales de la web. Lo que está entre [corchetes] falta completarlo.
+name: Pablo Mones
+position: Ph.D. Student in Economics
+university: '[University]'
+description: Pablo Mones is a Ph.D. student in Economics at [University]. Research, teaching and software.
+# La bio admite *cursiva*, **negrita** y [links](https://...). Un párrafo nuevo = una línea en blanco.
+bio: |-
+  I am a Ph.D. student in Economics at [University]. My research focuses on [main field] and [field 2].
+
+  I am also developing [arma.panel.ife](/software/), an R package for estimation and inference in short ARMA panels with interactive effects. Before the Ph.D., I [previous degree or job].
+# El CV no va acá: si existe public/cv.pdf, el link "CV (PDF)" aparece primero.
+links:
+  - label: Email
+    url: mailto:[email]
+  - label: GitHub
+    url: https://github.com/pablomones

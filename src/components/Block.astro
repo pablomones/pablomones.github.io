@@ -1,0 +1,21 @@
+---
+/** Bloque del diseño J: etiqueta en mayúsculas a la izquierda, contenido a la derecha. */
+interface Props {
+  label: string;
+  intro?: string | undefined;
+  id?: string;
+}
+
+import { inline } from '../lib/format';
+
+const { label, intro, id } = Astro.props;
+const headingId = id ? `${id}-heading` : undefined;
+---
+
+<section class="block" id={id} aria-labelledby={headingId}>
+  <h2 class="label" id={headingId}>{label}</h2>
+  <div class="block-body">
+    {intro && <p class="block-intro" set:html={inline(intro)} />}
+    <slot />
+  </div>
+</section>

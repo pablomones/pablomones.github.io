@@ -1,0 +1,302 @@
+/* Diseño J · Editorial ajustada. Instrument Serif para el nombre y los títulos de página, Inter para el resto. */
+
+:root {
+  --bg: #ffffff;
+  --ink: #141414;
+  --accent: #8a1c2b;
+  --muted: #5c5c5c;
+  --body-2: #333333;
+  --rule: #dedede;
+  --rule-strong: #141414;
+  --sep: #b5b5b5;
+  --placeholder: #ececec;
+
+  --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --sans: Inter, 'Helvetica Neue', Arial, sans-serif;
+  --mono: ui-monospace, 'SF Mono', Consolas, 'Liberation Mono', monospace;
+
+  --page: 1120px;
+  --gutter: 40px;
+  --label-col: 180px;
+
+  color-scheme: light;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --gutter: 20px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--ink);
+  text-underline-offset: 4px;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -48px;
+  z-index: 10;
+  padding: 8px 14px;
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 8px;
+  color: var(--bg);
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--page);
+  margin: 0 auto;
+  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
+}
+
+/* Encabezado */
+
+.site-header {
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.site-header .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 32px;
+}
+
+.site-name {
+  display: inline-flex;
+  align-items: center;
+  min-height: 60px;
+  font-family: var(--serif);
+  font-size: 26px;
+  line-height: 1.1;
+  text-decoration: none;
+}
+
+.site-name:hover {
+  color: var(--ink);
+}
+
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
+}
+
+.site-nav a[aria-current='page'] {
+  color: var(--accent);
+  text-decoration-line: underline;
+}
+
+/* Contenido */
+
+main {
+  flex: 1;
+  padding-bottom: 72px;
+}
+
+.label {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.page-title {
+  margin: 48px 0 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 44px;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.page-intro {
+  margin: 20px 0 0;
+  max-width: 620px;
+  font-size: 17px;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+/* Bloque con la etiqueta a la izquierda y el contenido a la derecha */
+.block {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule-strong);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 40px;
+}
+
+.block + .block {
+  margin-top: 40px;
+}
+
+.block > .label {
+  flex: 0 0 var(--label-col);
+}
+
+.block-body {
+  flex: 999 1 520px;
+  min-width: 0;
+}
+
+.block-intro {
+  margin: 0 0 20px;
+  max-width: 640px;
+  color: var(--body-2);
+  text-wrap: pretty;
+}
+
+.meta {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.actions {
+  margin: 4px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.actions a,
+.actions button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+}
+
+/* Botón de texto (abstract) */
+.text-button {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.text-button:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Sin JavaScript, los abstracts se ven siempre y el botón no aparece. */
+.abstract-toggle {
+  display: none !important;
+}
+
+.js .abstract-toggle {
+  display: inline-flex !important;
+}
+
+.js .abstract:not(.is-open) {
+  display: none;
+}
+
+.list-item {
+  padding: 0 0 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.list-item:last-of-type {
+  margin-bottom: 0;
+}
+
+/* Pie */
+
+.site-footer {
+  border-top: 1px solid var(--rule-strong);
+}
+
+.site-footer .wrap {
+  padding-top: 20px;
+  padding-bottom: max(20px, env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
+}

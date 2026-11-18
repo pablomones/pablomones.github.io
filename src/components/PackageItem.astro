@@ -1,0 +1,146 @@
+---
+import { Image } from 'astro:assets';
+import type { Package } from '../lib/content';
+import { inline } from '../lib/format';
+
+interface Props {
+  pkg: Package;
+}
+
+const { pkg } = Astro.props;
+const { data } = pkg;
+const meta = [data.version && `v${data.version}`, data.license, data.status !== 'In development' && data.status].filter(Boolean);
+---
+
+<article class="list-item package" id={pkg.id}>
+  {data.logo && <Image class="package-logo" src={data.logo} alt={`${data.name} logo`} width={112} height={112} densities={[1, 2]} />}
+  <div class="package-body">
+    <h3 class="package-name">
+      {data.name}{meta.length > 0 && <span class="package-meta">{` · ${meta.join(' · ')}`}</span>}
+    </h3>
+    <p class="package-description" set:html={inline(data.description)} />
+    {
+      data.install && (
+        <div class="install">
+          <pre><code>{data.install}</code></pre>
+          <button type="button" class="text-button copy" data-copy={data.install} hidden>
+            Copy
+          </button>
+        </div>
+      )
+    }
+    {
+      (data.repo || data.docs) && (
+        <p class="actions">
+          {data.repo && (
+            <a href={data.repo} rel="noopener">
+              {data.repo.includes('github.com') ? 'GitHub' : 'Source'}
+              <span aria-hidden="true">&nbsp;↗</span>
+            </a>
+          )}
+          {data.docs && (
+            <a href={data.docs} rel="noopener">
+              Documentation<span aria-hidden="true">&nbsp;↗</span>
+            </a>
+          )}
+        </p>
+      )
+    }
+  </div>
+</article>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('button.copy').forEach((button) => {
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.copy ?? '');
+        button.textContent = 'Copied';
+      } catch {
+        const code = button.parentElement?.querySelector('code');
+        if (code) window.getSelection()?.selectAllChildren(code);
+        button.textContent = 'Press Ctrl+C';
+      }
+      setTimeout(() => (button.textContent = 'Copy'), 2000);
+    });
+  });
+</script>
+
+<style>
+  .package {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 28px;
+    align-items: flex-start;
+    max-width: 760px;
+  }
+
+  .package:last-of-type {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .package-logo {
+    flex: none;
+    width: 112px;
+    height: 112px;
+    object-fit: contain;
+  }
+
+  .package-body {
+    flex: 1 1 320px;
+    min-width: 0;
+  }
+
+  .package-name {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .package-meta {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  .package-description {
+    margin: 8px 0 0;
+    text-wrap: pretty;
+  }
+
+  .install {
+    position: relative;
+    margin-top: 14px;
+  }
+
+  .install pre {
+    margin: 0;
+    padding: 14px 72px 14px 16px;
+    border: 1px solid var(--rule-strong);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+
+  .copy {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    min-height: 32px;
+    padding: 0 6px;
+    background: var(--bg);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .actions {
+    margin-top: 8px;
+  }
+</style>

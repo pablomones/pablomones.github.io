@@ -1,0 +1,160 @@
+---
+// Research, Teaching, Software y las Secciones extra. Una página solo se genera si tiene contenido.
+import type { GetStaticPaths } from 'astro';
+import AbstractToggle from '../components/AbstractToggle.astro';
+import Block from '../components/Block.astro';
+import CourseItem from '../components/CourseItem.astro';
+import PackageItem from '../components/PackageItem.astro';
+import PaperItem from '../components/PaperItem.astro';
+import Base from '../layouts/Base.astro';
+import { getExtraSections, getResearchGroups, getSoftwareGroups, getTeachingGroups } from '../lib/content';
+import { inline, withBase } from '../lib/format';
+
+export const getStaticPaths = (async () => {
+  const [research, teaching, software, extra] = await Promise.all([
+    getResearchGroups(),
+    getTeachingGroups(),
+    getSoftwareGroups(),
+    getExtraSections(),
+  ]);
+  return [
+    ...(research.length ? [{ params: { page: 'research' }, props: { kind: 'research' as const, research } }] : []),
+    ...(teaching.length ? [{ params: { page: 'teaching' }, props: { kind: 'teaching' as const, teaching } }] : []),
+    ...(software.length ? [{ params: { page: 'software' }, props: { kind: 'software' as const, software } }] : []),
+    ...extra.map(({ section, slug }) => ({ params: { page: slug }, props: { kind: 'extra' as const, section } })),
+  ];
+}) satisfies GetStaticPaths;
+
+const props = Astro.props;
+const { page } = Astro.params;
+
+const titles = { research: 'Research', teaching: 'Teaching', software: 'Software' };
+const title = props.kind === 'extra' ? props.section.data.name : titles[props.kind];
+---
+
+<Base title={title} current={page}>
+  <h1 class="page-title">{title}</h1>
+
+  {
+    props.kind === 'research' && (
+      <>
+        {props.research.map(({ section, papers }) => (
+          <Block label={section.data.name} intro={section.data.intro} id={section.id}>
+            {papers.map((paper) => (
+              <PaperItem paper={paper} />
+            ))}
+          </Block>
+        ))}
+        <AbstractToggle />
+      </>
+    )
+  }
+
+  {
+    props.kind === 'teaching' &&
+      props.teaching.map(({ role, courses }) => (
+        <Block label={role}>
+          {courses.map((course) => (
+            <CourseItem course={course} />
+          ))}
+        </Block>
+      ))
+  }
+
+  {
+    props.kind === 'software' &&
+      props.software.map(({ language, packages }) => (
+        <Block label={`${language} packages`}>
+          {packages.map((pkg) => (
+            <PackageItem pkg={pkg} />
+          ))}
+        </Block>
+      ))
+  }
+
+  {
+    props.kind === 'extra' && (
+      <>
+        {props.section.data.intro && <p class="page-intro" set:html={inline(props.section.data.intro)} />}
+        {props.section.data.items.length > 0 && (
+          <ul class="block items">
+            {props.section.data.items.map((item) => {
+              const href = item.url ?? item.file;
+              return (
+                <li class="list-item item">
+                  {item.date && <span class="item-date">{item.date}</span>}
+                  <span class="item-body">
+                    <span class="item-title">
+                      {href ? (
+                        <a href={withBase(href)} rel={item.url ? 'noopener' : undefined}>
+                          {item.title}
+                          <span aria-hidden="true">&nbsp;{item.url ? '↗' : '↓'}</span>
+                        </a>
+                      ) : (
+                        item.title
+                      )}
+                    </span>
+                    {item.description && <span class="meta item-description" set:html={inline(item.description)} />}
+                    {item.url && item.file && (
+                      <a class="item-pdf" href={withBase(item.file)}>
+                        PDF<span aria-hidden="true">&nbsp;↓</span>
+                      </a>
+                    )}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </>
+    )
+  }
+</Base>
+
+<style>
+  .items {
+    list-style: none;
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 0;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 24px;
+  }
+
+  .item-date {
+    flex: 0 0 130px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .item-body {
+    flex: 999 1 300px;
+    min-width: 0;
+  }
+
+  .item-title {
+    display: block;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .item-description {
+    display: block;
+  }
+
+  .item-pdf {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+</style>

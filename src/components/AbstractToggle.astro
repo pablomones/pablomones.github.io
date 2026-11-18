@@ -1,0 +1,24 @@
+<script>
+  // Abre y cierra los abstracts. Si la dirección trae #nombre-del-paper, ese abstract arranca abierto.
+  function setOpen(button: HTMLButtonElement, open: boolean) {
+    button.setAttribute('aria-expanded', String(open));
+    const sign = button.querySelector('.sign');
+    if (sign) sign.textContent = open ? ' −' : ' +';
+    const target = document.getElementById(button.getAttribute('aria-controls') ?? '');
+    target?.classList.toggle('is-open', open);
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.abstract-toggle').forEach((button) => {
+    button.addEventListener('click', () => setOpen(button, button.getAttribute('aria-expanded') !== 'true'));
+  });
+
+  function openFromHash() {
+    const id = decodeURIComponent(location.hash.slice(1));
+    if (!id) return;
+    const button = document.getElementById(id)?.querySelector<HTMLButtonElement>('.abstract-toggle');
+    if (button) setOpen(button, true);
+  }
+
+  openFromHash();
+  window.addEventListener('hashchange', openFromHash);
+</script>

@@ -1,0 +1,15 @@
+name: arma.panel.ife
+language: R
+status: In development
+version: 0.1.0
+license: GPL-3.0
+logo: ../../assets/arma-panel-ife.png
+description: >-
+  QMLE and efficient GMM estimation and inference for short ARMA panels with interactive effects,
+  with joint selection of the ARMA orders and the number of factors. It implements the methods in
+  *Likelihood and Order Selection for ARMA Dynamics in Panel Models with Interactive Effects*
+  (with Jushan Bai, 2026).
+install: |-
+  install.packages("remotes")
+  remotes::install_github("pablomones/arma.panel.ife")
+repo: https://github.com/pablomones/arma.panel.ife
