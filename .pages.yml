@@ -84,8 +84,8 @@ content:
     format: yaml
     subfolders: false
     filename:
-      template: "{primary}.yaml"
-      field: create
+      template: "{fields.title}.yaml"
+      field: false
     fields:
       - name: title
         label: Título
@@ -180,7 +180,7 @@ content:
     format: yaml
     subfolders: false
     filename:
-      template: "{primary}.yaml"
+      template: "{fields.name}.yaml"
       field: false
     fields:
       - name: name
@@ -205,7 +205,7 @@ content:
     format: yaml
     subfolders: false
     filename:
-      template: "{fields.year}-{fields.term}-{primary}.yaml"
+      template: "{fields.year}-{fields.term}-{fields.course}.yaml"
       field: false
     fields:
       - name: course
@@ -258,7 +258,7 @@ content:
     format: yaml
     subfolders: false
     filename:
-      template: "{primary}.yaml"
+      template: "{fields.name}.yaml"
       field: false
     fields:
       - name: name
@@ -319,7 +319,7 @@ content:
     format: yaml
     subfolders: false
     filename:
-      template: "{primary}.yaml"
+      template: "{fields.name}.yaml"
       field: false
     fields:
       - name: name
