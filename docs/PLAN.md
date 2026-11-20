@@ -64,7 +64,7 @@ Todos tienen varias páginas (About, Research, Teaching, Software, CV). En ningu
 | BibTeX | Solo si Pablo elige H o lo pide. Suma más o menos 1 hora |
 | CV | Sin página propia ni ítem en el menú: un link "CV (PDF)" junto a Email y GitHub abre el PDF (pedido de Pablo, 18/11) |
 | About | Debajo del nombre va la bio y, abajo, "Selected research" con los papers, sin números. Sin línea de "Interests" (pedido de Pablo, 18/11) |
-| Favicon | El logo de su universidad (pedido de Pablo, 18/11). Falta: qué universidad, el archivo del logo (SVG o PNG cuadrado) y revisar que la guía de marca de la universidad permita usarlo en una web personal. Si no lo permite, plan B: monograma "PM" |
+| Favicon | La corona de Columbia (pedido de Pablo, 18/11), de Wikimedia Commons (CC BY-SA 4.0), sin el "1754". Hay SVG, PNG de 32 px y apple-touch-icon. Crédito en el README |
 | Logo del paquete | El hexágono de `arma.panel.ife` (está en `man/figures/logo.png` de su repo) va en la sección Software |
 | Estado del paper | Campo opcional `status`, por ejemplo "Revise & Resubmit · [Journal X]". Se muestra debajo de los autores (pedido de Pablo, 18/11) |
 

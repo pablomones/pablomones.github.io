@@ -27,3 +27,7 @@ npm test        # tipos + contenido, build y links internos
 ## Contenido
 
 Todo el contenido está en YAML, en `src/content/` y `src/data/site.yaml`. Lo que está entre [corchetes] falta completarlo. El modelo de contenido y las decisiones están en [docs/PLAN.md](docs/PLAN.md).
+
+## Créditos
+
+- Ícono de la pestaña: corona de Columbia, de [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Columbia_College_of_Columbia_University_Crown_2020.svg) (CC BY-SA 4.0), recortada sin el "1754". La marca es de Columbia University.

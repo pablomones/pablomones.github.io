@@ -9,7 +9,8 @@ El plan completo, con las decisiones, el modelo de contenido, las etapas, las pr
 - Diseño elegido por Pablo: **J · Editorial ajustada** (`Editorial2.dc.html` en https://claude.ai/artifact/RkFxMGpdAjgxVHFH2G3Fn7).
 - Hechas: etapas 1 a 3 (esqueleto, contenido como datos y páginas con el diseño), con contenido de ejemplo entre [corchetes]. Online en https://pablomones.github.io desde el 18/11.
 - Repo: `origin` es `pablomones/pablomones.github.io` (Juani es colaborador). El remoto `juani` es el repo viejo de Juani y ya no se usa.
-- Falta: probar el campo Reference de Pages CMS, el contenido real (etapa 4), `.pages.yml` (etapa 5) y la guía (etapa 6).
+- Etapa 4: contenido real cargado (19/11): perfil, foto, papers, cursos, paquete, CV y favicon de Columbia. Falta Lighthouse y la prueba en celulares reales.
+- Falta: probar el campo Reference de Pages CMS, `.pages.yml` con la foto como campo editable (etapa 5) y la guía (etapa 6).
 
 ## Stack
 

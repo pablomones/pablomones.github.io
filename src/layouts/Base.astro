@@ -7,6 +7,8 @@ import '@fontsource/inter/600.css';
 import '../styles/global.css';
 import { getNav, getSite } from '../lib/content';
 import { formatDate, withBase } from '../lib/format';
+import { photo } from '../lib/photo';
+import { getImage } from 'astro:assets';
 
 interface Props {
   /** Título de la página; en el inicio va solo el nombre. */
@@ -24,6 +26,8 @@ const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.p
 const metaDescription = description ?? site.description ?? `${site.name}, ${site.position} at ${site.university}.`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const built = new Date();
+// La foto también es la imagen que muestran WhatsApp, LinkedIn y otros al compartir el link.
+const ogImage = photo ? await getImage({ src: photo, width: 800, format: 'jpg' }) : undefined;
 ---
 
 <!doctype html>
@@ -35,6 +39,8 @@ const built = new Date();
     <meta name="description" content={metaDescription} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={withBase('/favicon-32.png')} type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
     <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
     <meta name="theme-color" content="#ffffff" />
     <meta property="og:type" content="website" />
@@ -42,6 +48,16 @@ const built = new Date();
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={metaDescription} />
     <meta property="og:url" content={canonical} />
+    {
+      ogImage && (
+        <>
+          <meta property="og:image" content={new URL(ogImage.src, Astro.site)} />
+          <meta property="og:image:width" content={String(ogImage.attributes.width)} />
+          <meta property="og:image:height" content={String(ogImage.attributes.height)} />
+          <meta property="og:image:alt" content={`Portrait of ${site.name}`} />
+        </>
+      )
+    }
     <meta name="twitter:card" content="summary" />
     <meta name="generator" content={Astro.generator} />
     <script is:inline>document.documentElement.classList.add('js');</script>
