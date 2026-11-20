@@ -55,6 +55,34 @@ const pdf = z.preprocess(
 const list = <T extends z.ZodType>(item: T) =>
   z.preprocess((v) => (v == null || v === '' ? [] : v), z.array(item));
 
+/** Pages CMS puede guardar números y casillas como texto o vacíos: se aceptan las dos formas. */
+const toNumber = (v: unknown) => (typeof v === 'string' && v.trim() !== '' && !Number.isNaN(Number(v)) ? Number(v) : empty(v));
+const toBoolean = (v: unknown) => (v === 'true' ? true : v === 'false' ? false : empty(v));
+const flag = z.preprocess(toBoolean, z.boolean().default(false));
+const order = z.preprocess(toNumber, z.number({ error: 'Falta el orden (un número: 1 va primero).' }));
+
+/**
+ * Pages CMS guarda la subsección como ruta ("src/content/research-sections/working-papers.yaml").
+ * La web usa solo el nombre del archivo ("working-papers").
+ */
+const fileId = (v: unknown) => (typeof v === 'string' ? v.trim().replace(/^.*\//, '').replace(/\.ya?ml$/, '') : v);
+
+/** Una imagen subida a src/assets/ desde Pages CMS ("/src/assets/x.png") o escrita a mano. */
+const imagePath = z.preprocess(
+  empty,
+  z
+    .string()
+    .trim()
+    .transform((v) => '/' + v.replace(/^\/+/, ''))
+    .refine((v) => v.startsWith('/src/assets/') && /\.(jpe?g|png|webp)$/i.test(v), {
+      error: 'La imagen tiene que estar en src/assets/ y ser .jpg, .png o .webp.',
+    })
+    .refine((v) => existsSync(join(process.cwd(), v)), {
+      error: 'No encuentro esa imagen en src/assets/. Subila de nuevo.',
+    })
+    .optional(),
+);
+
 const yearMonth = z.preprocess(
   (v) => (v instanceof Date ? v.toISOString().slice(0, 7) : typeof v === 'string' ? v.trim().slice(0, 7) : v),
   z.string({ error: 'Falta la fecha (año y mes, por ejemplo 2026-03).' }).regex(/^\d{4}-(0[1-9]|1[0-2])$/, {
@@ -72,7 +100,7 @@ const papers = defineCollection({
   loader: glob({ pattern: '**/*.{yaml,yml}', base: './src/content/papers' }),
   schema: z.object({
     title: text('el título'),
-    section: reference('researchSections'),
+    section: z.preprocess(fileId, reference('researchSections')),
     date: yearMonth,
     coauthors: list(z.object({ name: text('el nombre del coautor'), url: link })),
     arxiv: z.preprocess(
@@ -90,8 +118,8 @@ const papers = defineCollection({
     status: optionalText,
     attachments: list(attachment),
     abstract: text('el abstract'),
-    selected: z.boolean().default(false),
-    hidden: z.boolean().default(false),
+    selected: flag,
+    hidden: flag,
   }),
 });
 
@@ -99,7 +127,7 @@ const researchSections = defineCollection({
   loader: glob({ pattern: '**/*.{yaml,yml}', base: './src/content/research-sections' }),
   schema: z.object({
     name: text('el nombre de la subsección'),
-    order: z.number({ error: 'Falta el orden (un número: 1 va primero).' }),
+    order,
     intro: optionalText,
   }),
 });
@@ -109,14 +137,14 @@ const teaching = defineCollection({
   schema: z.object({
     course: text('el nombre del curso'),
     term: text('el período (por ejemplo Fall o Winter)'),
-    year: z.number({ error: 'Falta el año (un número, por ejemplo 2026).' }).int().min(2000).max(2100),
+    year: z.preprocess(toNumber, z.number({ error: 'Falta el año (un número, por ejemplo 2026).' }).int().min(2000).max(2100)),
     role: text('el rol (por ejemplo Teaching Assistant)'),
     code: optionalText,
     professor: optionalText,
     level: optionalText,
     evaluation: optionalText,
     materials: link,
-    hidden: z.boolean().default(false),
+    hidden: flag,
   }),
 });
 
@@ -135,9 +163,13 @@ const software = defineCollection({
       install: optionalText,
       repo: link,
       docs: link,
-      logo: z.preprocess(empty, image().optional()),
-      order: z.number().default(1),
-      hidden: z.boolean().default(false),
+      // Pages CMS guarda "/src/assets/x.png"; image() necesita la ruta relativa a este archivo.
+      logo: z.preprocess(
+        (v) => (typeof v === 'string' && v.trim().startsWith('/src/') ? '../../' + v.trim().slice(5) : empty(v)),
+        image().optional(),
+      ),
+      order: z.preprocess(toNumber, z.number().default(1)),
+      hidden: flag,
     }),
 });
 
@@ -155,10 +187,10 @@ const sections = defineCollection({
     name: text('el nombre de la sección').refine((v) => slugify(v) !== '' && !RESERVED_SLUGS.includes(slugify(v)), {
       error: 'Ese nombre ya lo usa otra página de la web (Research, Teaching, Software, CV) o no tiene letras. Elegí otro.',
     }),
-    order: z.number({ error: 'Falta el orden (un número: 1 va primero).' }),
+    order,
     intro: optionalText,
     items: list(sectionItem),
-    hidden: z.boolean().default(false),
+    hidden: flag,
   }),
 });
 
@@ -191,6 +223,8 @@ const site = defineCollection({
     position: text('el cargo (por ejemplo Ph.D. Student in Economics)'),
     university: text('la universidad'),
     description: optionalText,
+    photo: imagePath,
+    cv: pdf,
     bio: text('la bio'),
     links: list(
       z.object({

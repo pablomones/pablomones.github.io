@@ -10,7 +10,8 @@ El plan completo, con las decisiones, el modelo de contenido, las etapas, las pr
 - Hechas: etapas 1 a 3 (esqueleto, contenido como datos y páginas con el diseño), con contenido de ejemplo entre [corchetes]. Online en https://pablomones.github.io desde el 18/11.
 - Repo: `origin` es `pablomones/pablomones.github.io` (Juani es colaborador). El remoto `juani` es el repo viejo de Juani y ya no se usa.
 - Etapa 4: contenido real cargado (19/11): perfil, foto, papers, cursos, paquete, CV y favicon de Columbia. Falta Lighthouse y la prueba en celulares reales.
-- Falta: probar el campo Reference de Pages CMS, `.pages.yml` con la foto como campo editable (etapa 5) y la guía (etapa 6).
+- Etapa 5: `.pages.yml` escrito (19/11), con etiquetas en español. Falta probarlo en app.pagescms.org (rama `develop`), sobre todo el campo Reference y la subida de un PDF grande.
+- Falta: la guía para Pablo (etapa 6).
 
 ## Stack
 
@@ -42,7 +43,7 @@ El plan completo, con las decisiones, el modelo de contenido, las etapas, las pr
 | `src/content/teaching/` | Cursos |
 | `src/content/software/` | Paquetes de R |
 | `src/content/sections/` | Secciones extra que crea Pablo (por ejemplo Presentations) |
-| `src/data/site.yaml` | Nombre, cargo, universidad, descripción para buscadores, bio y links |
-| `src/assets/photo.jpg`, `public/cv.pdf`, `public/files/` | Foto, CV y PDFs adjuntos. Sin foto se ve un recuadro gris; sin CV no aparece el link |
+| `src/data/site.yaml` | Nombre, cargo, universidad, descripción para buscadores, foto, CV, bio y links |
+| `src/assets/`, `public/files/` | Imágenes (foto, logos) y PDFs (CV, papers). `site.yaml` dice cuál es la foto y cuál el CV |
 
 Si el pedido es de contenido (agregar un paper, cambiar la bio), editá solo esos archivos y no toques el código.

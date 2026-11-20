@@ -7,7 +7,7 @@ import '@fontsource/inter/600.css';
 import '../styles/global.css';
 import { getNav, getSite } from '../lib/content';
 import { formatDate, withBase } from '../lib/format';
-import { photo } from '../lib/photo';
+import { findImage } from '../lib/photo';
 import { getImage } from 'astro:assets';
 
 interface Props {
@@ -27,6 +27,7 @@ const metaDescription = description ?? site.description ?? `${site.name}, ${site
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const built = new Date();
 // La foto también es la imagen que muestran WhatsApp, LinkedIn y otros al compartir el link.
+const photo = findImage(site.photo);
 const ogImage = photo ? await getImage({ src: photo, width: 800, format: 'jpg' }) : undefined;
 ---
 

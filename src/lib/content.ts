@@ -1,5 +1,3 @@
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import { plain } from './format';
 import { slugify } from './slug';
@@ -14,9 +12,6 @@ export async function getSite() {
   if (!entry) throw new Error('Falta el archivo src/data/site.yaml.');
   return entry.data;
 }
-
-/** El CV aparece solo si existe public/cv.pdf. */
-export const hasCv = existsSync(join(process.cwd(), 'public', 'cv.pdf'));
 
 const newestFirst = (a: Paper, b: Paper) => b.data.date.localeCompare(a.data.date) || a.data.title.localeCompare(b.data.title);
 

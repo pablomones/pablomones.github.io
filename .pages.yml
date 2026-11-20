@@ -1,0 +1,365 @@
+# Configuración del editor de la web (Pages CMS: https://app.pagescms.org).
+# Cada vez que Pablo guarda algo, Pages CMS hace un commit y GitHub Actions publica la web en 1 o 2 minutos.
+# Si un dato está mal escrito, la publicación falla y queda online la versión anterior.
+
+media:
+  - name: files
+    label: PDFs
+    input: public/files
+    output: /files
+    extensions: [pdf]
+    rename: safe
+  - name: images
+    label: Imágenes
+    input: src/assets
+    output: /src/assets
+    extensions: [jpg, jpeg, png, webp]
+    rename: safe
+
+content:
+  # ---------- Perfil (un solo archivo) ----------
+  - name: site
+    label: Perfil
+    type: file
+    path: src/data/site.yaml
+    format: yaml
+    fields:
+      - name: name
+        label: Nombre
+        type: string
+        required: true
+      - name: position
+        label: Cargo
+        type: string
+        required: true
+        description: "Por ejemplo: Ph.D. Student in Economics"
+      - name: university
+        label: Universidad
+        type: string
+        required: true
+      - name: description
+        label: Descripción para Google
+        type: text
+        description: Una o dos frases en inglés. Es lo que muestran Google y la vista previa del link en WhatsApp o LinkedIn.
+      - name: photo
+        label: Foto
+        type: image
+        description: Vertical, con la cara en la mitad de arriba. La web la recorta a 4:5 desde el centro.
+        options:
+          media: images
+      - name: cv
+        label: CV (PDF)
+        type: file
+        description: Si lo dejás vacío, desaparece el link "CV (PDF)".
+        options:
+          media: files
+      - name: bio
+        label: Bio
+        type: text
+        required: true
+        description: "En inglés. Un párrafo nuevo = una línea en blanco. Se puede usar *cursiva*, **negrita** y [texto](https://link)."
+      - name: links
+        label: Links
+        type: object
+        list: true
+        description: Aparecen al lado de "CV (PDF)", en este orden. Los emails van como mailto:nombre@dominio.
+        fields:
+          - name: label
+            label: Texto
+            type: string
+            required: true
+          - name: url
+            label: Link
+            type: string
+            required: true
+            pattern:
+              regex: "^(https?://|mailto:)"
+              message: "Tiene que empezar con https:// o mailto:"
+
+  # ---------- Papers ----------
+  - name: papers
+    label: Papers
+    type: collection
+    path: src/content/papers
+    format: yaml
+    subfolders: false
+    filename:
+      template: "{primary}.yaml"
+      field: create
+    fields:
+      - name: title
+        label: Título
+        type: string
+        required: true
+      - name: section
+        label: Subsección de Research
+        type: reference
+        required: true
+        description: Working Papers, Publications, etc. Se crean y ordenan en "Subsecciones de Research".
+        options:
+          collection: research-sections
+          search: name
+          value: "{path}"
+          label: "{fields.name}"
+      - name: date
+        label: Fecha
+        type: date
+        required: true
+        description: Año y mes. Ordena los papers, el más nuevo arriba.
+        options:
+          format: yyyy-MM
+      - name: coauthors
+        label: Coautores
+        type: object
+        list: true
+        description: Sin vos. Si no hay coautores, la web dice "Solo-authored".
+        fields:
+          - name: name
+            label: Nombre
+            type: string
+            required: true
+          - name: url
+            label: Web (opcional)
+            type: string
+      - name: arxiv
+        label: ID de arXiv
+        type: string
+        description: "Solo el número, por ejemplo 2504.14354. Arma los botones arXiv y PDF."
+        pattern:
+          regex: "^(\\d{4}\\.\\d{4,5}(v\\d+)?)?$"
+          message: Tiene que ser como 2504.14354, sin "arXiv:" y sin el link
+      - name: url
+        label: Link al paper (si no está en arXiv)
+        type: string
+        description: SSRN, NBER, la web de la revista, etc.
+      - name: journal
+        label: Revista
+        type: string
+        description: Para papers publicados. Aparece en cursiva debajo de los autores.
+      - name: status
+        label: Estado
+        type: string
+        description: "Por ejemplo: Revise & Resubmit · Econometrica. Aparece en bordó."
+      - name: attachments
+        label: Adjuntos
+        type: object
+        list: true
+        description: Slides, apéndice, PDF propio, etc. Cada uno con un link, un PDF (hasta 95 MB) o los dos.
+        fields:
+          - name: label
+            label: Texto del botón
+            type: string
+            required: true
+          - name: url
+            label: Link
+            type: string
+          - name: file
+            label: PDF
+            type: file
+            options:
+              media: files
+      - name: abstract
+        label: Abstract
+        type: text
+        required: true
+        description: "Copialo de arXiv tal cual. Las fórmulas entre $...$ se ven bien ($N$, $p_0$, $T \\times T$)."
+      - name: selected
+        label: Mostrar en el inicio ("Selected research")
+        type: boolean
+        default: false
+      - name: hidden
+        label: Ocultar (sin borrarlo)
+        type: boolean
+        default: false
+
+  # ---------- Subsecciones de Research ----------
+  - name: research-sections
+    label: Subsecciones de Research
+    type: collection
+    path: src/content/research-sections
+    format: yaml
+    subfolders: false
+    filename:
+      template: "{primary}.yaml"
+      field: false
+    fields:
+      - name: name
+        label: Nombre
+        type: string
+        required: true
+        description: "Por ejemplo: Job Market Paper, Working Papers, Publications."
+      - name: order
+        label: Orden
+        type: number
+        required: true
+        description: 1 va primero. Una subsección sin papers no aparece.
+      - name: intro
+        label: Texto introductorio (opcional)
+        type: text
+
+  # ---------- Teaching ----------
+  - name: teaching
+    label: Cursos
+    type: collection
+    path: src/content/teaching
+    format: yaml
+    subfolders: false
+    filename:
+      template: "{fields.year}-{fields.term}-{primary}.yaml"
+      field: false
+    fields:
+      - name: course
+        label: Curso
+        type: string
+        required: true
+      - name: term
+        label: Período
+        type: select
+        required: true
+        options:
+          values: [Fall, Spring, Summer, Winter]
+      - name: year
+        label: Año
+        type: number
+        required: true
+      - name: role
+        label: Rol
+        type: string
+        required: true
+        default: Teaching Assistant
+        description: Los cursos se agrupan por rol (Teaching Assistant, Instructor…).
+      - name: level
+        label: Nivel
+        type: string
+        description: "Ph.D., M.A., Undergraduate…"
+      - name: professor
+        label: Instructor
+        type: string
+      - name: evaluation
+        label: Evaluación de los estudiantes
+        type: string
+        description: "Por ejemplo: 4.5/5.0"
+      - name: code
+        label: Código del curso
+        type: string
+      - name: materials
+        label: Link a materiales
+        type: string
+      - name: hidden
+        label: Ocultar (sin borrarlo)
+        type: boolean
+        default: false
+
+  # ---------- Software ----------
+  - name: software
+    label: Paquetes
+    type: collection
+    path: src/content/software
+    format: yaml
+    subfolders: false
+    filename:
+      template: "{primary}.yaml"
+      field: false
+    fields:
+      - name: name
+        label: Nombre
+        type: string
+        required: true
+      - name: language
+        label: Lenguaje
+        type: string
+        default: R
+        description: Los paquetes se agrupan por lenguaje ("R packages").
+      - name: status
+        label: Estado
+        type: select
+        required: true
+        options:
+          values: [In development, On CRAN, Archived]
+      - name: version
+        label: Versión
+        type: string
+      - name: license
+        label: Licencia
+        type: string
+      - name: logo
+        label: Logo
+        type: image
+        options:
+          media: images
+      - name: description
+        label: Descripción
+        type: text
+        required: true
+        description: "En inglés. Se puede usar *cursiva* y [texto](https://link)."
+      - name: install
+        label: Cómo instalarlo
+        type: text
+        description: El código que se copia con el botón "Copy".
+      - name: repo
+        label: Link al repositorio
+        type: string
+      - name: docs
+        label: Link a la documentación
+        type: string
+      - name: order
+        label: Orden
+        type: number
+        default: 1
+      - name: hidden
+        label: Ocultar (sin borrarlo)
+        type: boolean
+        default: false
+
+  # ---------- Secciones extra ----------
+  - name: sections
+    label: Secciones extra
+    type: collection
+    path: src/content/sections
+    format: yaml
+    subfolders: false
+    filename:
+      template: "{primary}.yaml"
+      field: false
+    fields:
+      - name: name
+        label: Nombre
+        type: string
+        required: true
+        description: Aparece en el menú y define la dirección (Presentations → /presentations/).
+      - name: order
+        label: Orden en el menú
+        type: number
+        required: true
+        description: Van después de Software. 1 va primero.
+      - name: intro
+        label: Texto introductorio
+        type: text
+      - name: items
+        label: Ítems
+        type: object
+        list: true
+        fields:
+          - name: title
+            label: Título
+            type: string
+            required: true
+          - name: description
+            label: Descripción
+            type: string
+          - name: date
+            label: Fecha
+            type: string
+            description: "Texto libre, por ejemplo: June 2026"
+          - name: url
+            label: Link
+            type: string
+          - name: file
+            label: PDF
+            type: file
+            options:
+              media: files
+      - name: hidden
+        label: Ocultar (sin borrarla)
+        type: boolean
+        default: false

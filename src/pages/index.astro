@@ -2,16 +2,17 @@
 import { Image } from 'astro:assets';
 import Authors from '../components/Authors.astro';
 import Base from '../layouts/Base.astro';
-import { getResearchGroups, getSelectedPapers, getSite, hasCv } from '../lib/content';
+import { getResearchGroups, getSelectedPapers, getSite } from '../lib/content';
 import { formatMonth, paragraphs, withBase } from '../lib/format';
-import { photo } from '../lib/photo';
+import { findImage } from '../lib/photo';
 
 const site = await getSite();
 const bio = paragraphs(site.bio);
 const selected = (await getResearchGroups()).length > 0 ? await getSelectedPapers() : [];
 
 
-const links = [...(hasCv ? [{ label: 'CV (PDF)', url: withBase('/cv.pdf') }] : []), ...site.links];
+const photo = findImage(site.photo);
+const links = [...(site.cv ? [{ label: 'CV (PDF)', url: withBase(site.cv) }] : []), ...site.links];
 ---
 
 <Base current="about">

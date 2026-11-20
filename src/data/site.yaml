@@ -5,12 +5,14 @@ university: Columbia University
 description: >-
   Pablo Mones is a Ph.D. student in Economics at Columbia University. His research focuses on
   econometrics: panel data, time series, and causal inference.
+# La foto está en src/assets/ y el CV en public/files/. Sin CV, no aparece el link "CV (PDF)".
+photo: /src/assets/photo.jpg
+cv: /files/pablo-mones-cv.pdf
 # La bio admite *cursiva*, **negrita** y [links](https://...). Un párrafo nuevo = una línea en blanco.
 bio: >-
   I am a fourth-year Ph.D. student in Economics at Columbia University, originally from Uruguay.
   My research focuses on econometrics, particularly at the intersection of panel data, time
   series, and causal inference.
-# El CV no va acá: como existe public/cv.pdf, el link "CV (PDF)" aparece primero.
 links:
   - label: Email
     url: mailto:pm3257@columbia.edu
