@@ -24,15 +24,22 @@ const links = [...(hasCv ? [{ label: 'CV (PDF)', url: withBase('/cv.pdf') }] : [
       </div>
       {
         links.length > 0 && (
-          <ul class="profile-links">
-            {links.map((l) => (
-              <li>
-                <a href={l.url} rel={l.url.startsWith('http') ? 'me noopener' : undefined}>
-                  {l.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div class="profile">
+            <ul class="profile-links">
+              {links.map((l) => (
+                <li>
+                  <a
+                    href={l.url}
+                    rel={l.url.startsWith('http') ? 'me noopener' : undefined}
+                    data-email={l.url.startsWith('mailto:') ? l.url.slice(7).split('?')[0] : undefined}
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p class="copy-status" role="status" aria-live="polite" />
+          </div>
         )
       }
     </div>
@@ -78,6 +85,31 @@ const links = [...(hasCv ? [{ label: 'CV (PDF)', url: withBase('/cv.pdf') }] : [
     )
   }
 </Base>
+
+<script>
+  // El link "Email" abre el programa de correo si hay uno configurado. Como muchos no lo tienen
+  // (por ejemplo, quien usa Gmail en el navegador), además copia la dirección y lo avisa.
+  const status = document.querySelector<HTMLElement>('.copy-status');
+  let hideTimer: number | undefined;
+
+  function show(text: string) {
+    if (!status) return;
+    status.textContent = text;
+    status.classList.add('is-visible');
+    window.clearTimeout(hideTimer);
+    hideTimer = window.setTimeout(() => status.classList.remove('is-visible'), 4000);
+  }
+
+  document.querySelectorAll<HTMLAnchorElement>('a[data-email]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const email = link.dataset.email ?? '';
+      navigator.clipboard?.writeText(email).then(
+        () => show(`${email} · copied`),
+        () => show(email),
+      ) ?? show(email);
+    });
+  });
+</script>
 
 <style>
   .intro {
@@ -152,6 +184,26 @@ const links = [...(hasCv ? [{ label: 'CV (PDF)', url: withBase('/cv.pdf') }] : [
     display: inline-flex;
     align-items: center;
     min-height: 44px;
+  }
+
+  .profile {
+    position: relative;
+  }
+
+  /* Aviso de "copiado": debajo de los links, sin mover el resto de la página. */
+  .copy-status {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .copy-status.is-visible {
+    opacity: 1;
   }
 
   .photo {
