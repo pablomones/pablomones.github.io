@@ -278,6 +278,21 @@ main {
   margin-bottom: 0;
 }
 
+/* Fórmulas cortas de los abstracts ($N$, $p_0$) */
+.math {
+  font-style: italic;
+  white-space: nowrap;
+  /* La cursiva se inclina hacia la derecha: un poco de aire para que no se pegue a lo que sigue. */
+  padding-right: 0.08em;
+}
+
+.math sub,
+.math sup {
+  font-style: normal;
+  font-size: 0.75em;
+  line-height: 0;
+}
+
 /* Pie */
 
 .site-footer {

@@ -7,7 +7,14 @@ interface Props {
 }
 
 const { data } = Astro.props.course;
-const detail = [data.code, data.professor && `for Prof. ${data.professor}`, data.level].filter(Boolean).join(' · ');
+const detail = [
+  data.code,
+  data.level,
+  data.professor && `Instructor: ${data.professor}`,
+  data.evaluation && `Student evaluation: ${data.evaluation}`,
+]
+  .filter(Boolean)
+  .join(' · ');
 ---
 
 <div class="list-item course">

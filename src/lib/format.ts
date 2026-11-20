@@ -55,6 +55,37 @@ export function inline(value: string): string {
   return html;
 }
 
+const TEX_SYMBOLS: Record<string, string> = {
+  times: '×', to: '→', rightarrow: '→', infty: '∞', leq: '≤', le: '≤', geq: '≥', ge: '≥', neq: '≠',
+  approx: '≈', pm: '±', cdot: '·', ldots: '…', dots: '…', in: '∈', sim: '∼',
+  alpha: 'α', beta: 'β', gamma: 'γ', delta: 'δ', epsilon: 'ε', varepsilon: 'ε', theta: 'θ', lambda: 'λ',
+  mu: 'μ', nu: 'ν', pi: 'π', rho: 'ρ', sigma: 'σ', tau: 'τ', phi: 'φ', varphi: 'φ', psi: 'ψ', omega: 'ω',
+  Gamma: 'Γ', Delta: 'Δ', Theta: 'Θ', Lambda: 'Λ', Sigma: 'Σ', Phi: 'Φ', Psi: 'Ψ', Omega: 'Ω',
+};
+
+/** Una fórmula corta de LaTeX (lo que va entre $…$ en arXiv) a HTML: subíndices, superíndices y símbolos. */
+function texToHtml(tex: string): string {
+  const html = tex
+    .replace(/\\([A-Za-z]+)/g, (match, name: string) => TEX_SYMBOLS[name] ?? match)
+    .replace(/([_^])\{([^{}]*)\}|([_^])([A-Za-z0-9])/g, (_m, op1: string, group: string, op2: string, single: string) => {
+      const tag = (op1 ?? op2) === '_' ? 'sub' : 'sup';
+      return `<${tag}>${group ?? single}</${tag}>`;
+    })
+    .replace(/[{}]/g, '');
+  return `<span class="math">${html}</span>`;
+}
+
+/**
+ * Para los abstracts: igual que inline(), y además las fórmulas entre $…$ como las de arXiv
+ * ($N$, $p_0$, $T \times T$, $N \to \infty$).
+ */
+export function richText(value: string): string {
+  const parts = value.split(/(\$[^$]+\$)/g);
+  return parts
+    .map((part) => (part.length > 2 && part.startsWith('$') && part.endsWith('$') ? texToHtml(escapeHtml(part.slice(1, -1))) : inline(part)))
+    .join('');
+}
+
 /** Párrafos separados por una línea en blanco. */
 export function paragraphs(value: string): string[] {
   return value

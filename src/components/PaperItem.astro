@@ -1,6 +1,6 @@
 ---
 import type { Paper } from '../lib/content';
-import { formatMonth, withBase } from '../lib/format';
+import { formatMonth, richText, withBase } from '../lib/format';
 import Authors from './Authors.astro';
 
 interface Props {
@@ -44,7 +44,7 @@ for (const a of data.attachments) {
     }
   </p>
   <div class="abstract" id={abstractId}>
-    <p>{data.abstract}</p>
+    <p set:html={richText(data.abstract)} />
   </div>
 </article>
 

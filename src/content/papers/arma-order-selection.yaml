@@ -1,0 +1,23 @@
+title: Likelihood and Order Selection for ARMA Dynamics in Panel Models with Interactive Effects
+section: working-papers
+date: 2026-11
+coauthors:
+  - name: Jushan Bai
+# Todavía no está en arXiv: por ahora solo el PDF.
+attachments:
+  - label: PDF
+    file: /files/bai-mones-arma-panel-ife.pdf
+abstract: >-
+  We study dynamic panel data models with short time dimension $T$ and large cross-sectional
+  dimension $N$ in which outcomes follow an ARMA($p_0, q_0$) process with $r_0$ interactive
+  effects, extending the workhorse AR(1) dynamic specification. The model implies a parametric
+  structure for the $T \times T$ covariance matrix of the outcome that captures dynamic dependence
+  through an ARMA process, cross-sectional dependence via the interactive effects, and time-series
+  heteroskedasticity in the innovations. Exploiting these covariance restrictions, we develop
+  estimation and inference based on Gaussian quasi-maximum likelihood and a second-moment GMM
+  approach. Both procedures operate in levels without the incidental-parameter (Nickell) bias
+  associated with within estimation when $T$ is fixed. We establish consistency and asymptotic
+  normality as $N \to \infty$ with fixed $T$, and provide feasible variance estimation.
+  Additionally, we propose an information criterion that consistently selects the true unknown
+  orders ($p_0, q_0, r_0$) in this setting.
+selected: true

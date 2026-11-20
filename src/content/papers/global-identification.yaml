@@ -1,0 +1,17 @@
+title: Global identification of dynamic panel models with interactive effects
+section: working-papers
+date: 2025-04
+coauthors:
+  - name: Jushan Bai
+arxiv: '2504.14354'
+abstract: >-
+  We investigate the problem of global identification in dynamic panel models with interactive
+  effects, in the large-$N$, fixed-$T$ setting. While local identification, typically established
+  via the Jacobian matrix, is well understood, global identification has remained a more elusive
+  and challenging issue. It is commonly believed to be unachievable in this context. However, we
+  demonstrate that the model is, in fact, globally identified for almost all configurations of
+  the factors. Our analysis also covers models with additive fixed effects, including unit-root
+  cases in which previous studies have reported non-identification from differenced moments. We
+  show that, even in these settings, the level covariance structure delivers global
+  identification.
+selected: true

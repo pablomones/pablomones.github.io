@@ -1,7 +1,7 @@
-import { existsSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { defineCollection, reference } from 'astro:content';
-import { file, glob } from 'astro/loaders';
+import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { parse as parseYaml } from 'yaml';
 import { RESERVED_SLUGS, slugify } from './lib/slug';
@@ -114,6 +114,7 @@ const teaching = defineCollection({
     code: optionalText,
     professor: optionalText,
     level: optionalText,
+    evaluation: optionalText,
     materials: link,
     hidden: z.boolean().default(false),
   }),
@@ -161,8 +162,30 @@ const sections = defineCollection({
   }),
 });
 
+// site.yaml es un solo objeto, no una lista: lo carga un loader propio.
+// (El loader file() de Astro haría que VS Code lo marque como error, porque espera una lista.)
+const SITE_FILE = 'src/data/site.yaml';
+
 const site = defineCollection({
-  loader: file('src/data/site.yaml', { parser: (raw) => [{ id: 'site', ...parseYaml(raw) }] }),
+  loader: {
+    name: 'site-yaml',
+    load: async ({ store, parseData, watcher }) => {
+      const sync = async () => {
+        const data = await parseData({
+          id: 'site',
+          data: parseYaml(readFileSync(join(process.cwd(), SITE_FILE), 'utf8')),
+          filePath: SITE_FILE,
+        });
+        store.clear();
+        store.set({ id: 'site', data });
+      };
+      await sync();
+      watcher?.add(join(process.cwd(), SITE_FILE));
+      watcher?.on('change', async (changed) => {
+        if (changed.replace(/\\/g, '/').endsWith(SITE_FILE)) await sync();
+      });
+    },
+  },
   schema: z.object({
     name: text('tu nombre'),
     position: text('el cargo (por ejemplo Ph.D. Student in Economics)'),

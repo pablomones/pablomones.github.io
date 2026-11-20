@@ -1,16 +1,18 @@
-# Datos generales de la web. Lo que está entre [corchetes] falta completarlo.
+# Datos generales de la web.
 name: Pablo Mones
 position: Ph.D. Student in Economics
-university: '[University]'
-description: Pablo Mones is a Ph.D. student in Economics at [University]. Research, teaching and software.
+university: Columbia University
+description: >-
+  Pablo Mones is a Ph.D. student in Economics at Columbia University. His research focuses on
+  econometrics: panel data, time series, and causal inference.
 # La bio admite *cursiva*, **negrita** y [links](https://...). Un párrafo nuevo = una línea en blanco.
-bio: |-
-  I am a Ph.D. student in Economics at [University]. My research focuses on [main field] and [field 2].
-
-  I am also developing [arma.panel.ife](/software/), an R package for estimation and inference in short ARMA panels with interactive effects. Before the Ph.D., I [previous degree or job].
-# El CV no va acá: si existe public/cv.pdf, el link "CV (PDF)" aparece primero.
+bio: >-
+  I am a fourth-year Ph.D. student in Economics at Columbia University, originally from Uruguay.
+  My research focuses on econometrics, particularly at the intersection of panel data, time
+  series, and causal inference.
+# El CV no va acá: como existe public/cv.pdf, el link "CV (PDF)" aparece primero.
 links:
   - label: Email
-    url: mailto:[email]
+    url: mailto:pm3257@columbia.edu
   - label: GitHub
     url: https://github.com/pablomones

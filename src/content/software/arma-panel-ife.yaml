@@ -5,9 +5,10 @@ version: 0.1.0
 license: GPL-3.0
 logo: ../../assets/arma-panel-ife.png
 description: >-
-  QMLE and efficient GMM estimation and inference for short ARMA panels with interactive effects,
-  with joint selection of the ARMA orders and the number of factors. It implements the methods in
-  *Likelihood and Order Selection for ARMA Dynamics in Panel Models with Interactive Effects*
+  An R package for estimation and inference in short ARMA panels with interactive effects using
+  QMLE and efficient GMM. It also provides joint selection of the ARMA orders and the number of
+  factors. The package implements the methods developed in
+  [*Likelihood and Order Selection for ARMA Dynamics in Panel Models with Interactive Effects*](/research/#arma-order-selection)
   (with Jushan Bai, 2026).
 install: |-
   install.packages("remotes")
