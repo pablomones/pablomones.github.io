@@ -124,18 +124,14 @@ content:
       - name: arxiv
         label: Número de arXiv
         type: string
-        description: "Si el paper está en arXiv, poné solo su número (por ejemplo 2504.14354) y la web arma sola los botones arXiv y PDF."
+        description: "Si el paper está en arXiv, poné su número (por ejemplo 2504.14354) o pegá el link de arXiv. La web arma sola los botones arXiv y PDF."
         pattern:
-          regex: "^(\\d{4}\\.\\d{4,5}(v\\d+)?)?$"
-          message: Tiene que ser como 2504.14354, sin "arXiv:" y sin el link
-      - name: journal
-        label: Revista
-        type: string
-        description: "Para papers ya publicados. Por ejemplo: Journal of Econometrics, 2027. Sale en cursiva debajo de los autores."
+          regex: "^$|^((arXiv|arxiv|ARXIV): ?|https?://(www\\.)?arxiv\\.org/(abs|pdf)/)?\\d{4}\\.\\d{4,5}(v\\d+)?(\\.pdf)?/?$"
+          message: "Tiene que ser el número (como 2504.14354) o el link de arXiv"
       - name: status
-        label: Estado
+        label: Estado o revista
         type: string
-        description: "Para papers en proceso. Por ejemplo: Revise & Resubmit · Econometrica, o Submitted. Sale en bordó."
+        description: "Dónde está el paper. En proceso: Revise & Resubmit · Econometrica, o Submitted. Publicado: *Journal of Econometrics*, 2027 (entre asteriscos sale en cursiva). Sale en bordó debajo de los autores."
       - name: attachments
         label: Botones
         type: object

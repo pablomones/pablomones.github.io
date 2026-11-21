@@ -1,6 +1,6 @@
 ---
 import type { Paper } from '../lib/content';
-import { formatMonth, richText, withBase } from '../lib/format';
+import { formatMonth, inline, richText, withBase } from '../lib/format';
 import { buttonLabel } from '../lib/buttons';
 import Authors from './Authors.astro';
 
@@ -30,8 +30,7 @@ for (const b of data.attachments) {
 <article class="list-item paper" id={id}>
   <h3 class="paper-title">{data.title}</h3>
   <p class="meta"><Authors coauthors={data.coauthors} /> · {formatMonth(data.date)}</p>
-  {data.journal && <p class="meta paper-journal">{data.journal}</p>}
-  {data.status && <p class="paper-status">{data.status}</p>}
+  {data.status && <p class="paper-status" set:html={inline(data.status)} />}
   <p class="actions">
     <button type="button" class="text-button abstract-toggle" aria-expanded="false" aria-controls={abstractId}>
       Abstract<span aria-hidden="true" class="sign">&nbsp;+</span>
@@ -57,10 +56,6 @@ for (const b of data.attachments) {
     font-weight: 600;
     line-height: 1.4;
     text-wrap: balance;
-  }
-
-  .paper-journal {
-    font-style: italic;
   }
 
   .paper-status {

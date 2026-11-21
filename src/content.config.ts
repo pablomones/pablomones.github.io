@@ -83,6 +83,14 @@ const imagePath = z.preprocess(
     .optional(),
 );
 
+/** "https://arxiv.org/abs/2504.14354", "arXiv:2504.14354" o "2504.14354" → "2504.14354". */
+const arxivNumber = (v: string) => {
+  const s = v.trim();
+  if (s === '') return undefined;
+  const m = s.match(/^(?:arxiv:\s*|https?:\/\/(?:www\.)?arxiv\.org\/(?:abs|pdf)\/)?(\d{4}\.\d{4,5}(?:v\d+)?)(?:\.pdf)?\/?$/i);
+  return m ? m[1] : s;
+};
+
 const yearMonth = z.preprocess(
   (v) => (v instanceof Date ? v.toISOString().slice(0, 7) : typeof v === 'string' ? v.trim().slice(0, 7) : v),
   z.string({ error: 'Falta la fecha (año y mes, por ejemplo 2026-03).' }).regex(/^\d{4}-(0[1-9]|1[0-2])$/, {
@@ -108,17 +116,17 @@ const papers = defineCollection({
     section: z.preprocess(fileId, reference('researchSections')),
     date: yearMonth,
     coauthors: list(z.object({ name: text('el nombre del coautor'), url: link })),
+    // Se acepta el número (2504.14354), "arXiv:2504.14354" o el link entero: se guarda solo el número.
     arxiv: z.preprocess(
-      empty,
+      (v) => (typeof v === 'string' ? arxivNumber(v) : empty(v)),
       z
         .string()
-        .trim()
         .regex(/^\d{4}\.\d{4,5}(v\d+)?$/, {
-          error: 'El número de arXiv tiene que ser como 2504.14354 (sin "arXiv:" y sin el link).',
+          error: 'El número de arXiv tiene que ser como 2504.14354, o el link de arXiv entero.',
         })
         .optional(),
     ),
-    journal: optionalText,
+    // "Estado o revista": en proceso (Revise & Resubmit · Econometrica) o publicado (*Journal of Econometrics*, 2027).
     status: optionalText,
     attachments: list(attachment),
     abstract: text('el abstract'),
