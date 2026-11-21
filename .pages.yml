@@ -130,8 +130,22 @@ content:
           message: "Tiene que ser el número (como 2504.14354) o el link de arXiv"
       - name: status
         label: Estado o revista
-        type: string
-        description: "Dónde está el paper. En proceso: Revise & Resubmit · Econometrica, o Submitted. Publicado: *Journal of Econometrics*, 2027 (entre asteriscos sale en cursiva). Sale en bordó debajo de los autores."
+        type: object
+        description: "Dónde está el paper. Sale debajo de los autores: en bordó si está en proceso, en cursiva si ya está publicado. Sin texto, no aparece."
+        fields:
+          - name: stage
+            label: Etapa
+            type: select
+            options:
+              values:
+                - name: in-progress
+                  label: En proceso
+                - name: published
+                  label: Publicado
+          - name: text
+            label: Texto
+            type: string
+            description: "En proceso: Revise & Resubmit · Econometrica, o Submitted. Publicado: Journal of Econometrics, 2027."
       - name: attachments
         label: Botones
         type: object

@@ -91,6 +91,31 @@ const arxivNumber = (v: string) => {
   return m ? m[1] : s;
 };
 
+/**
+ * "Estado o revista" de un paper: una etapa (en proceso o publicado) y un texto.
+ * En proceso sale en bordó (Revise & Resubmit · Econometrica); publicado, en cursiva (Journal of Econometrics, 2027).
+ * También acepta un texto suelto (status: "Submitted"), que cuenta como en proceso. Sin texto, no se muestra.
+ */
+const paperStatus = z.preprocess(
+  (v) => {
+    if (typeof v === 'string') return v.trim() === '' ? undefined : { text: v };
+    if (v && typeof v === 'object') {
+      const o = v as { text?: unknown; stage?: unknown };
+      const text = typeof o.text === 'string' ? o.text.trim() : '';
+      return text === '' ? undefined : { text, stage: empty(o.stage) };
+    }
+    return empty(v);
+  },
+  z
+    .object({
+      text: z.string(),
+      stage: z
+        .enum(['in-progress', 'published'], { error: 'La etapa tiene que ser En proceso o Publicado.' })
+        .default('in-progress'),
+    })
+    .optional(),
+);
+
 const yearMonth = z.preprocess(
   (v) => (v instanceof Date ? v.toISOString().slice(0, 7) : typeof v === 'string' ? v.trim().slice(0, 7) : v),
   z.string({ error: 'Falta la fecha (año y mes, por ejemplo 2026-03).' }).regex(/^\d{4}-(0[1-9]|1[0-2])$/, {
@@ -126,8 +151,7 @@ const papers = defineCollection({
         })
         .optional(),
     ),
-    // "Estado o revista": en proceso (Revise & Resubmit · Econometrica) o publicado (*Journal of Econometrics*, 2027).
-    status: optionalText,
+    status: paperStatus,
     attachments: list(attachment),
     abstract: text('el abstract'),
     selected: flag,

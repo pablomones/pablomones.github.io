@@ -116,7 +116,7 @@ pablomones.github.io/
 | `coauthors` | No | Sin Pablo. Cada coautor puede tener link a su web. Vacío = "Solo-authored" |
 | `arxiv` | No | Número de arXiv (también acepta el link o "arXiv:…"; se guarda el número); arma los botones arXiv y PDF |
 | `attachments` | No | "Botones" en el editor: cada uno un link o un PDF, con texto opcional (sin texto: PDF, GitHub, SSRN… según lo cargado). Reemplaza al viejo campo `url` (20/11) |
-| `status` | No | "Estado o revista" en el editor: en proceso (`Revise & Resubmit · Econometrica`) o publicado (`*Journal of Econometrics*, 2027`, con cursiva opcional). Una línea en bordó. Reemplaza al viejo `journal` (20/11) |
+| `status` | No | "Estado o revista" en el editor: `stage` (En proceso / Publicado, por defecto En proceso) + `text`. En proceso sale en bordó (`Revise & Resubmit · Econometrica`); publicado, en cursiva gris (`Journal of Econometrics, 2027`). Reemplaza al viejo `journal` (20/11) |
 | `abstract` | Sí | Aparece al desplegar |
 | `selected` | No | Aparece en "Selected research" del inicio. Si ninguno está marcado, van los tres más nuevos |
 | `hidden` | No | Oculta el paper sin borrarlo |

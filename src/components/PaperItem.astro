@@ -30,7 +30,14 @@ for (const b of data.attachments) {
 <article class="list-item paper" id={id}>
   <h3 class="paper-title">{data.title}</h3>
   <p class="meta"><Authors coauthors={data.coauthors} /> · {formatMonth(data.date)}</p>
-  {data.status && <p class="paper-status" set:html={inline(data.status)} />}
+  {
+    data.status && (
+      <p
+        class={data.status.stage === 'published' ? 'meta paper-journal' : 'paper-status'}
+        set:html={inline(data.status.text)}
+      />
+    )
+  }
   <p class="actions">
     <button type="button" class="text-button abstract-toggle" aria-expanded="false" aria-controls={abstractId}>
       Abstract<span aria-hidden="true" class="sign">&nbsp;+</span>
@@ -58,6 +65,12 @@ for (const b of data.attachments) {
     text-wrap: balance;
   }
 
+  /* Publicado: la revista en cursiva, gris como los autores. */
+  .paper-journal {
+    font-style: italic;
+  }
+
+  /* En proceso: en bordó, como en el diseño. */
   .paper-status {
     margin: 4px 0 0;
     font-size: 14px;
