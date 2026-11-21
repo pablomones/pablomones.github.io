@@ -90,10 +90,15 @@ const yearMonth = z.preprocess(
   }),
 );
 
+// Un botón de un paper ("Botones" en el editor): un link o un PDF, y un texto opcional.
+// Sin texto, la web pone uno automático (ver src/lib/buttons.ts).
 const attachment = z
-  .object({ label: text('la etiqueta del adjunto'), url: link, file: pdf })
+  .object({ label: optionalText, url: link, file: pdf })
   .refine((v) => v.url !== undefined || v.file !== undefined, {
-    error: 'Cada adjunto necesita un link, un PDF o los dos.',
+    error: 'Cada botón necesita un link o un PDF.',
+  })
+  .refine((v) => v.url === undefined || v.file === undefined, {
+    error: 'Cada botón lleva un link o un PDF, no los dos. Para las dos cosas, agregá dos botones.',
   });
 
 const papers = defineCollection({
@@ -109,11 +114,10 @@ const papers = defineCollection({
         .string()
         .trim()
         .regex(/^\d{4}\.\d{4,5}(v\d+)?$/, {
-          error: 'El ID de arXiv tiene que ser como 2601.01234 (sin "arXiv:" y sin el link).',
+          error: 'El número de arXiv tiene que ser como 2504.14354 (sin "arXiv:" y sin el link).',
         })
         .optional(),
     ),
-    url: link,
     journal: optionalText,
     status: optionalText,
     attachments: list(attachment),

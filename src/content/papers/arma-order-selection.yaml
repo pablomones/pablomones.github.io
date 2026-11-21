@@ -5,8 +5,7 @@ coauthors:
   - name: Jushan Bai
 # Todavía no está en arXiv: por ahora solo el PDF.
 attachments:
-  - label: PDF
-    file: /files/bai-mones-arma-panel-ife.pdf
+  - file: /files/bai-mones-arma-panel-ife.pdf
 abstract: >-
   We study dynamic panel data models with short time dimension $T$ and large cross-sectional
   dimension $N$ in which outcomes follow an ARMA($p_0, q_0$) process with $r_0$ interactive

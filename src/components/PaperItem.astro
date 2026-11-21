@@ -1,6 +1,7 @@
 ---
 import type { Paper } from '../lib/content';
 import { formatMonth, richText, withBase } from '../lib/format';
+import { buttonLabel } from '../lib/buttons';
 import Authors from './Authors.astro';
 
 interface Props {
@@ -18,10 +19,11 @@ if (data.arxiv) {
   actions.push({ label: 'arXiv', href: `https://arxiv.org/abs/${data.arxiv}`, kind: 'external' });
   actions.push({ label: 'PDF', href: `https://arxiv.org/pdf/${data.arxiv}`, kind: 'download' });
 }
-if (data.url) actions.push({ label: 'Paper', href: withBase(data.url), kind: 'external' });
-for (const a of data.attachments) {
-  if (a.url) actions.push({ label: a.label, href: withBase(a.url), kind: 'external' });
-  if (a.file) actions.push({ label: a.url ? `${a.label} (PDF)` : a.label, href: withBase(a.file), kind: 'download' });
+// Cada botón lleva un link o un PDF (el esquema no deja los dos).
+for (const b of data.attachments) {
+  const label = buttonLabel(b.label, b.url, b.file);
+  if (b.file) actions.push({ label, href: withBase(b.file), kind: 'download' });
+  else if (b.url) actions.push({ label, href: withBase(b.url), kind: 'external' });
 }
 ---
 

@@ -30,7 +30,7 @@ El plan completo, con las decisiones, el modelo de contenido, las etapas, las pr
 - Una sección sin contenido no aparece en el menú ni genera página.
 - Los errores de contenido tienen que decir qué archivo y qué campo arreglar, en palabras que entienda Pablo.
 - Nada de Google Scholar. Los links del perfil son una lista libre (etiqueta + URL).
-- Los adjuntos de un paper son un link, un PDF de hasta 95 MB o los dos. GitHub bloquea archivos de más de 100 MB.
+- Los botones de un paper ("Botones" en el editor, `attachments` en el YAML) llevan un link o un PDF de hasta 95 MB, no los dos; el texto es opcional y sin texto se pone solo (`src/lib/buttons.ts`). GitHub bloquea archivos de más de 100 MB.
 - Accesibilidad y rendimiento: HTML semántico, teclado, contraste de 4.5 a 1, Lighthouse 95 o más.
 - El precio del trabajo no aparece en ningún archivo ni documento que vea Pablo.
 

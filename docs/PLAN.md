@@ -53,7 +53,7 @@ Todos tienen varias páginas (About, Research, Teaching, Software, CV). En ningu
 | Repo | En la cuenta de Pablo desde la etapa 1: `pablomones.github.io`. Juani es colaborador. Pablo crea la cuenta y el repo vacío, activa GitHub Pages y suma a Juani, todo con una guía con capturas |
 | Dominio | Ninguno: `pablomones.github.io`. Costo fijo USD 0. Se puede sumar después |
 | Control de calidad | Sin pull requests: se trabaja en `develop` y `main` es lo publicado (pedido de Juani, 18/11). Los chequeos de tipos, esquemas, build y links frenan la publicación si fallan. Lo visual se revisa con `npm run dev` antes de cada push |
-| Adjuntos de un paper | Lista de adjuntos: cada uno tiene etiqueta y un link, un PDF de hasta 95 MB o los dos. Sin link ni PDF, el build falla. Los paquetes de replicación van siempre como link |
+| Botones de un paper | Lista de botones: cada uno un link o un PDF de hasta 95 MB, no los dos. El texto es opcional: sin texto, la web pone PDF, GitHub, SSRN… (20/11, para simplificar el editor). Los paquetes de replicación van siempre como link |
 | Campos vacíos | Un campo opcional vacío no se muestra (ni etiqueta ni botón). Excepción: un paper sin coautores dice "Solo-authored" |
 | Secciones vacías | Una sección sin contenido visible no aparece en el menú ni genera página |
 | Secciones extra | Pablo crea secciones nuevas (por ejemplo Presentations) desde Pages CMS: nombre, texto e ítems con descripción y link o PDF |
@@ -114,9 +114,8 @@ pablomones.github.io/
 | `section` | Sí | Referencia a una subsección de Research |
 | `date` | Sí | Año y mes; ordena la lista, el más nuevo arriba |
 | `coauthors` | No | Sin Pablo. Cada coautor puede tener link a su web. Vacío = "Solo-authored" |
-| `arxiv` | No | Formato de ID de arXiv; arma los botones arXiv y PDF |
-| `url` | No | Para papers fuera de arXiv (SSRN, NBER) |
-| `attachments` | No | Etiqueta + link, PDF o los dos |
+| `arxiv` | No | Número de arXiv; arma los botones arXiv y PDF |
+| `attachments` | No | "Botones" en el editor: cada uno un link o un PDF, con texto opcional (sin texto: PDF, GitHub, SSRN… según lo cargado). Reemplaza al viejo campo `url` (20/11) |
 | `journal` | No | Debajo del título |
 | `status` | No | Estado del paper, por ejemplo "Revise & Resubmit · [Journal X]" |
 | `abstract` | Sí | Aparece al desplegar |

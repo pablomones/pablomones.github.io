@@ -122,42 +122,43 @@ content:
             label: Web (opcional)
             type: string
       - name: arxiv
-        label: ID de arXiv
+        label: Número de arXiv
         type: string
-        description: "Solo el número, por ejemplo 2504.14354. Arma los botones arXiv y PDF."
+        description: "Si el paper está en arXiv, poné solo su número (por ejemplo 2504.14354) y la web arma sola los botones arXiv y PDF."
         pattern:
           regex: "^(\\d{4}\\.\\d{4,5}(v\\d+)?)?$"
           message: Tiene que ser como 2504.14354, sin "arXiv:" y sin el link
-      - name: url
-        label: Link al paper (si no está en arXiv)
-        type: string
-        description: SSRN, NBER, la web de la revista, etc.
       - name: journal
         label: Revista
         type: string
-        description: Para papers publicados. Aparece en cursiva debajo de los autores.
+        description: "Para papers ya publicados. Por ejemplo: Journal of Econometrics, 2027. Sale en cursiva debajo de los autores."
       - name: status
         label: Estado
         type: string
-        description: "Por ejemplo: Revise & Resubmit · Econometrica. Aparece en bordó."
+        description: "Para papers en proceso. Por ejemplo: Revise & Resubmit · Econometrica, o Submitted. Sale en bordó."
       - name: attachments
-        label: Adjuntos
+        label: Botones
         type: object
         list: true
-        description: Slides, apéndice, PDF propio, etc. Cada uno con un link, un PDF (hasta 95 MB) o los dos.
+        description: "Todo lo que no es arXiv: el PDF del paper, slides, apéndice, código, un link a SSRN… Cada botón lleva un link o un PDF (hasta 95 MB)."
         fields:
-          - name: label
-            label: Texto del botón
-            type: string
-            required: true
           - name: url
             label: Link
             type: string
+            description: "Por ejemplo el link de SSRN, GitHub o Google Drive. Dejalo vacío si subís un PDF."
+            pattern:
+              regex: "^$|^(https?://|/)"
+              message: "Tiene que empezar con https://"
           - name: file
             label: PDF
             type: file
+            description: Dejalo vacío si pusiste un link.
             options:
               media: files
+          - name: label
+            label: Texto del botón (opcional)
+            type: string
+            description: "Vacío: la web pone PDF, GitHub, SSRN… según lo que cargaste. Escribilo cuando haya dos PDFs (por ejemplo Online Appendix) o cuando el link no diga qué es (por ejemplo Slides en Google Drive)."
       - name: abstract
         label: Abstract
         type: text
