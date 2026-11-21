@@ -7,11 +7,11 @@ El plan completo, con las decisiones, el modelo de contenido, las etapas, las pr
 ## Estado actual
 
 - Diseño elegido por Pablo: **J · Editorial ajustada** (`Editorial2.dc.html` en https://claude.ai/artifact/RkFxMGpdAjgxVHFH2G3Fn7).
-- Hechas: etapas 1 a 3 (esqueleto, contenido como datos y páginas con el diseño), con contenido de ejemplo entre [corchetes]. Online en https://pablomones.github.io desde el 18/11.
+- Online en https://pablomones.github.io desde el 18/11, con el contenido real de Pablo (perfil, foto, papers, cursos, paquete, CV y favicon de Columbia).
 - Repo: `origin` es `pablomones/pablomones.github.io` (Juani es colaborador). El remoto `juani` es el repo viejo de Juani y ya no se usa.
-- Etapa 4: contenido real cargado (19/11): perfil, foto, papers, cursos, paquete, CV y favicon de Columbia. Falta Lighthouse y la prueba en celulares reales.
-- Etapa 5: `.pages.yml` escrito (19/11), con etiquetas en español. Falta probarlo en app.pagescms.org (rama `develop`), sobre todo el campo Reference y la subida de un PDF grande.
-- Falta: la guía para Pablo (etapa 6).
+- Editor: Pages CMS configurado y probado en `develop` (20/11): campo Reference, subida de PDFs, foto, botones de papers, "Estado o revista" con selector.
+- Guía para Pablo (etapa 6): https://claude.ai/artifact/PUGU9JAgBBngRff6wv8Qhd (entregada el 20/11).
+- Pendiente: Lighthouse y prueba en celulares reales.
 
 ## Stack
 
@@ -24,6 +24,7 @@ El plan completo, con las decisiones, el modelo de contenido, las etapas, las pr
 ## Reglas que no se discuten
 
 - Sin pull requests. Se trabaja en `develop` (se valida, no se publica); `main` es lo que está online. El build es la compuerta: `npm test` (tipos, esquemas, build y links) tiene que pasar.
+- Pablo edita directo en `main` desde Pages CMS. Antes de trabajar en `develop`, traé lo último: `git fetch && git merge origin/main`. Las pruebas hechas en `develop` desde el editor no se pasan a `main`: se pasa solo el código (cherry-pick) y después `develop` vuelve a ser igual a `main`.
 - Antes de cada push, Juani revisa con `npm run dev`. No hagas push ni toques la cuenta de GitHub de Pablo sin que te lo pidan.
 - Antes de cada etapa, decí qué archivos vas a crear o cambiar y esperá el OK. Al terminar, mostrá el resultado de las pruebas tal cual, aunque fallen.
 - Un campo opcional vacío no se muestra. Excepción: un paper sin coautores dice "Solo-authored".
